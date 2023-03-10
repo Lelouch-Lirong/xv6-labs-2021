@@ -433,3 +433,24 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+void
+vmprint(pagetable_t p, int deep)
+{
+  if(deep == 1){
+    printf("page table %p\n", p);
+  }
+  pte_t pte;
+  for(int i = 0; i < 512; i++){
+    pte = p[i];
+    if(pte & PTE_V){    //合法
+      //输出层次
+      for(int j = 0; j < deep; j++){
+        printf(" ..");
+      }
+      //输出索引、pte、pte含有的物理地址
+      printf("%d: pte %p pa %p\n", i, pte, pte>>10<<12);
+      if(deep < 3)  vmprint((pagetable_t)(pte>>10<<12), deep+1);
+    }
+  }
+}
