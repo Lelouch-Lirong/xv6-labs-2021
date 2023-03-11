@@ -674,3 +674,22 @@ procdump(void)
     printf("\n");
   }
 }
+int
+pgaccess(uint64 addr, int num, uint64 dst){
+  struct proc *p = myproc();
+  pagetable_t pagetable= p->pagetable;
+  uint64 res = 0;
+
+  for(int i = 0; i < num; i++){
+    pte_t *pte;
+    pte = walk(pagetable, addr + i*PGSIZE, 0);
+    if(pte && (*pte & PTE_A)){
+      res = res | (1<<i);
+      *pte = *pte ^ PTE_A;
+    }
+  }
+  if(copyout(pagetable, dst, (char*)&res, sizeof(res))){
+    return -1;
+  }
+  return 0;
+}

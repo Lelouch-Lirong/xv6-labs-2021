@@ -77,11 +77,32 @@ sys_sleep(void)
 
 
 #ifdef LAB_PGTBL
+// A system call that reports which pages have been accessed. 
+// The system call takes three arguments. 
+// First, it takes the starting virtual address of the first user page to check. 
+// Second, it takes the number of pages to check. 
+// Finally, it takes a user address to a buffer 
+// to store the results into a bitmask 
+// (a datastructure that uses one bit per page 
+// and where the first page corresponds to the least significant bit).
+
 int
 sys_pgaccess(void)
 {
   // lab pgtbl: your code here.
-  return 0;
+  uint64 addr;
+  int num;
+  uint64 dst;
+  if(argaddr(0, &addr) < 0){
+    return -1;
+  }
+  if(argint(1, &num) < 0){
+    return -1;
+  }
+  if(argaddr(2, &dst) < 0){
+    return -1;
+  }
+  return pgaccess(addr, num, dst);
 }
 #endif
 
