@@ -690,23 +690,6 @@ procdump(void)
     printf("\n");
   }
 }
-<<<<<<< HEAD
-
-uint64
-get_nproc(void)
-{
-  struct proc *p;
-  uint64 num =0;
-  for(p = proc; p < &proc[NPROC]; p++) {
-    acquire(&p->lock);
-
-    if(p->state != UNUSED)
-      num++;
-
-    release(&p->lock);
-  }
-  return num;
-=======
 int
 pgaccess(uint64 addr, int num, uint64 dst){
   struct proc *p = myproc();
@@ -725,5 +708,4 @@ pgaccess(uint64 addr, int num, uint64 dst){
     return -1;
   }
   return 0;
->>>>>>> pgtbl
 }
