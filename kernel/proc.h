@@ -105,5 +105,9 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+<<<<<<< HEAD
   char mask[32];               // trace mask掩码
+=======
+  struct usyscall *usc;        //usyscall lab4.1
+>>>>>>> pgtbl
 };

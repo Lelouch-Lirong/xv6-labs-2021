@@ -64,7 +64,10 @@ ls(char *path)
         continue;
       }
       printf("%s %d %d %d\n", fmtname(buf), st.type, st.ino, st.size);
+<<<<<<< HEAD
       //printf("%s %d %d %d\n", buf, st.type, st.ino, st.size);
+=======
+>>>>>>> pgtbl
     }
     break;
   }

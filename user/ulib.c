@@ -1,8 +1,19 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "kernel/fcntl.h"
+<<<<<<< HEAD
 #include "user/user.h"
 
+=======
+#ifdef LAB_PGTBL
+#include "kernel/riscv.h"
+#include "kernel/memlayout.h"
+#endif
+#include "user/user.h"
+
+
+
+>>>>>>> pgtbl
 char*
 strcpy(char *s, const char *t)
 {
@@ -134,3 +145,15 @@ memcpy(void *dst, const void *src, uint n)
 {
   return memmove(dst, src, n);
 }
+<<<<<<< HEAD
+=======
+
+#ifdef LAB_PGTBL
+int
+ugetpid(void)
+{
+  struct usyscall *u = (struct usyscall *)USYSCALL;
+  return u->pid;
+}
+#endif
+>>>>>>> pgtbl

@@ -127,6 +127,17 @@ found:
     return 0;
   }
 
+<<<<<<< HEAD
+=======
+  //为usyscall分配空间
+  if((p->usc = (struct usyscall *)kalloc()) == 0){
+    freeproc(p);
+    release(&p->lock);
+    return 0;
+  }
+  p->usc->pid = p->pid;
+
+>>>>>>> pgtbl
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
   if(p->pagetable == 0){
@@ -155,6 +166,12 @@ freeproc(struct proc *p)
   p->trapframe = 0;
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
+<<<<<<< HEAD
+=======
+  if(p->usc)
+    kfree((void*)p->usc);
+  p->usc = 0;
+>>>>>>> pgtbl
   p->pagetable = 0;
   p->sz = 0;
   p->pid = 0;
@@ -196,6 +213,17 @@ proc_pagetable(struct proc *p)
     return 0;
   }
 
+<<<<<<< HEAD
+=======
+  //映射USYSCALL
+  if(mappages(pagetable, USYSCALL, PGSIZE,
+              (uint64)(p->usc), PTE_R | PTE_U) < 0){
+    uvmunmap(pagetable, USYSCALL, 1, 0);
+    uvmfree(pagetable, 0);
+    return 0;
+  }
+  
+>>>>>>> pgtbl
   return pagetable;
 }
 
@@ -206,6 +234,10 @@ proc_freepagetable(pagetable_t pagetable, uint64 sz)
 {
   uvmunmap(pagetable, TRAMPOLINE, 1, 0);
   uvmunmap(pagetable, TRAPFRAME, 1, 0);
+<<<<<<< HEAD
+=======
+  uvmunmap(pagetable, USYSCALL, 1, 0);
+>>>>>>> pgtbl
   uvmfree(pagetable, sz);
 }
 
@@ -288,7 +320,10 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+<<<<<<< HEAD
   safestrcpy(np->mask, p->mask, sizeof(p->mask));
+=======
+>>>>>>> pgtbl
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -655,6 +690,7 @@ procdump(void)
     printf("\n");
   }
 }
+<<<<<<< HEAD
 
 uint64
 get_nproc(void)
@@ -670,4 +706,24 @@ get_nproc(void)
     release(&p->lock);
   }
   return num;
+=======
+int
+pgaccess(uint64 addr, int num, uint64 dst){
+  struct proc *p = myproc();
+  pagetable_t pagetable= p->pagetable;
+  uint64 res = 0;
+
+  for(int i = 0; i < num; i++){
+    pte_t *pte;
+    pte = walk(pagetable, addr + i*PGSIZE, 0);
+    if(pte && (*pte & PTE_A)){
+      res = res | (1<<i);
+      *pte = *pte ^ PTE_A;
+    }
+  }
+  if(copyout(pagetable, dst, (char*)&res, sizeof(res))){
+    return -1;
+  }
+  return 0;
+>>>>>>> pgtbl
 }

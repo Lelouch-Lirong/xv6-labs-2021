@@ -18,6 +18,10 @@ struct run {
   struct run *next;
 };
 
+<<<<<<< HEAD
+=======
+//lock是上锁的信号量，这里是自旋锁
+>>>>>>> pgtbl
 struct {
   struct spinlock lock;
   struct run *freelist;
@@ -48,14 +52,26 @@ kfree(void *pa)
 {
   struct run *r;
 
+<<<<<<< HEAD
   if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
     panic("kfree");
 
+=======
+  //地址未对齐 || 地址越界  触发panic
+  if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
+    panic("kfree");
+
+  // 为了防止悬空引用索引到旧数据，这里将内存填满1，若有悬空引用，会直接触发中断
+>>>>>>> pgtbl
   // Fill with junk to catch dangling refs.
   memset(pa, 1, PGSIZE);
 
   r = (struct run*)pa;
 
+<<<<<<< HEAD
+=======
+  //将释放的内存加到kmem的空闲块链表里
+>>>>>>> pgtbl
   acquire(&kmem.lock);
   r->next = kmem.freelist;
   kmem.freelist = r;
@@ -80,6 +96,7 @@ kalloc(void)
     memset((char*)r, 5, PGSIZE); // fill with junk
   return (void*)r;
 }
+<<<<<<< HEAD
 
 //返回空闲内存
 uint64
@@ -94,3 +111,5 @@ get_freemem(void)
   
   return i * PGSIZE;
 }
+=======
+>>>>>>> pgtbl

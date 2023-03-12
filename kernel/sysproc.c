@@ -1,5 +1,6 @@
 #include "types.h"
 #include "riscv.h"
+<<<<<<< HEAD
 #include "defs.h"
 #include "date.h"
 #include "param.h"
@@ -7,6 +8,14 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "sysinfo.h"
+=======
+#include "param.h"
+#include "defs.h"
+#include "date.h"
+#include "memlayout.h"
+#include "spinlock.h"
+#include "proc.h"
+>>>>>>> pgtbl
 
 uint64
 sys_exit(void)
@@ -47,6 +56,10 @@ sys_sbrk(void)
 
   if(argint(0, &n) < 0)
     return -1;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> pgtbl
   addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
@@ -59,6 +72,10 @@ sys_sleep(void)
   int n;
   uint ticks0;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> pgtbl
   if(argint(0, &n) < 0)
     return -1;
   acquire(&tickslock);
@@ -74,6 +91,40 @@ sys_sleep(void)
   return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+#ifdef LAB_PGTBL
+// A system call that reports which pages have been accessed. 
+// The system call takes three arguments. 
+// First, it takes the starting virtual address of the first user page to check. 
+// Second, it takes the number of pages to check. 
+// Finally, it takes a user address to a buffer 
+// to store the results into a bitmask 
+// (a datastructure that uses one bit per page 
+// and where the first page corresponds to the least significant bit).
+
+int
+sys_pgaccess(void)
+{
+  // lab pgtbl: your code here.
+  uint64 addr;
+  int num;
+  uint64 dst;
+  if(argaddr(0, &addr) < 0){
+    return -1;
+  }
+  if(argint(1, &num) < 0){
+    return -1;
+  }
+  if(argaddr(2, &dst) < 0){
+    return -1;
+  }
+  return pgaccess(addr, num, dst);
+}
+#endif
+
+>>>>>>> pgtbl
 uint64
 sys_kill(void)
 {
@@ -96,6 +147,7 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+<<<<<<< HEAD
 
 uint64 
 sys_trace(void)
@@ -129,3 +181,5 @@ sys_sysinfo(void)
 
   return 0;
 }
+=======
+>>>>>>> pgtbl
