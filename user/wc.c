@@ -17,11 +17,7 @@ wc(int fd, char *name)
       c++;
       if(buf[i] == '\n')
         l++;
-<<<<<<< HEAD
-      if(strchr(" \r\t\n\v", buf[i])) //C 库函数 char *strchr(const char *str, int c) 在参数 str 所指向的字符串中搜索第一次出现字符 c（一个无符号字符）的位置。
-=======
       if(strchr(" \r\t\n\v", buf[i]))
->>>>>>> pgtbl
         inword = 0;
       else if(!inword){
         w++;

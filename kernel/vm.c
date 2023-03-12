@@ -123,14 +123,9 @@ walkaddr(pagetable_t pagetable, uint64 va)
 // add a mapping to the kernel page table.
 // only used when booting.
 // does not flush TLB or enable paging.
-<<<<<<< HEAD
-void
-kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
-=======
 // perm是读写位flag
 void
 kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm) 
->>>>>>> pgtbl
 {
   if(mappages(kpgtbl, va, sz, pa, perm) != 0)
     panic("kvmmap");
@@ -154,11 +149,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
   for(;;){
     if((pte = walk(pagetable, a, 1)) == 0)
       return -1;
-<<<<<<< HEAD
-    if(*pte & PTE_V)
-=======
     if(*pte & PTE_V)          //&得到valid位
->>>>>>> pgtbl
       panic("mappages: remap");
     *pte = PA2PTE(pa) | perm | PTE_V;
     if(a == last)
@@ -442,8 +433,6 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
-<<<<<<< HEAD
-=======
 
 void
 vmprint(pagetable_t p, int deep)
@@ -465,4 +454,3 @@ vmprint(pagetable_t p, int deep)
     }
   }
 }
->>>>>>> pgtbl

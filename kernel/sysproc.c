@@ -1,21 +1,11 @@
 #include "types.h"
 #include "riscv.h"
-<<<<<<< HEAD
-#include "defs.h"
-#include "date.h"
-#include "param.h"
-#include "memlayout.h"
-#include "spinlock.h"
-#include "proc.h"
-#include "sysinfo.h"
-=======
 #include "param.h"
 #include "defs.h"
 #include "date.h"
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
->>>>>>> pgtbl
 
 uint64
 sys_exit(void)
@@ -56,10 +46,7 @@ sys_sbrk(void)
 
   if(argint(0, &n) < 0)
     return -1;
-<<<<<<< HEAD
-=======
   
->>>>>>> pgtbl
   addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
@@ -72,10 +59,7 @@ sys_sleep(void)
   int n;
   uint ticks0;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> pgtbl
   if(argint(0, &n) < 0)
     return -1;
   acquire(&tickslock);
@@ -91,8 +75,6 @@ sys_sleep(void)
   return 0;
 }
 
-<<<<<<< HEAD
-=======
 
 #ifdef LAB_PGTBL
 // A system call that reports which pages have been accessed. 
@@ -124,7 +106,6 @@ sys_pgaccess(void)
 }
 #endif
 
->>>>>>> pgtbl
 uint64
 sys_kill(void)
 {
@@ -147,39 +128,3 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-<<<<<<< HEAD
-
-uint64 
-sys_trace(void)
-{
-  int trace_mask;
-  if(argint(0, &trace_mask) < 0)  return -1;
-  struct proc *p = myproc();
-  char *mask = p->mask;
-  for(int i = 0; trace_mask > 0; i++, trace_mask >>= 1){
-    if(trace_mask % 2 == 1) mask[i] = '1';
-    else mask[i] = '0';
-  }
-  return 0;
-}
-
-uint64
-sys_sysinfo(void)
-{
-  struct proc *p = myproc();
-  struct sysinfo info;
-
-  info.freemem = get_freemem();
-  info.nproc = get_nproc();
-  
-  uint64 addr;
-  if(argaddr(0, &addr) < 0)
-    return  -1;
-  
-  if(copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0)
-      return -1;
-
-  return 0;
-}
-=======
->>>>>>> pgtbl
